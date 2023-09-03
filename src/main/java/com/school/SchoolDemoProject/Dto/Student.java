@@ -33,20 +33,32 @@ public class Student {
 	}
 
 	public Student(StudentDetails details) {
-		firstName = details.getFirstName();
-		lastName = details.getLastName();
-		email = details.getEmail();
-		contact = details.getPhone();
-		gender = details.getGender();
-		sclass = details.getSclass();
-		city = details.getCity();
-		state = details.getState();
-		country = details.getCountry();
+		this.firstName = details.getFirstName();
+		this.lastName = details.getLastName();
+		this.email = details.getEmail();
+		this.contact = details.getPhone();
+		this.gender = details.getGender();
+		this.sclass = details.getSclass();
+		this.city = details.getCity();
+		this.state = details.getState();
+		this.country = details.getCountry();
 		/**
-		 * As because we are getting the data in the format of 2023-08-29
-		 * so we don't need to use DateTimeFormatter
-		 * */
-		dob = LocalDate.parse(details.getDob());
+		 * As because we are getting the data in the format of 2023-08-29 so we don't
+		 * need to use DateTimeFormatter
+		 */
+		this.dob = LocalDate.parse(details.getDob());
+	}
+
+	public void updateStudent(Student updatedData) {
+		this.setFirstName(updatedData.getFirstName());
+		this.setLastName(updatedData.getLastName());
+		this.setContact(updatedData.getContact());
+		this.setGender(updatedData.getGender());
+		this.setSclass(updatedData.getSclass());
+		this.setCity(updatedData.getCity());
+		this.setState(updatedData.getState());
+		this.setCountry(updatedData.getCountry());
+		this.setDob(updatedData.getDob());
 	}
 
 	/**
@@ -139,6 +151,13 @@ public class Student {
 
 	public void setDob(LocalDate dob) {
 		this.dob = dob;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [sid=" + sid + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", contact=" + contact + ", gender=" + gender + ", sclass=" + sclass + ", city=" + city + ", state="
+				+ state + ", country=" + country + ", dob=" + dob + "]\n";
 	}
 
 }

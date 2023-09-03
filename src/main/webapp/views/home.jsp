@@ -28,9 +28,21 @@
 	<%
 	} else {
 	%>
+	<script type="text/javascript">
+		function home() {
+			window.location.href = "http://localhost:8080/home";
+		}
+		function addstudent(){
+			window.location.href = "http://localhost:8080/addstudentdetails";			
+		}
+		function logout(){
+			window.location.href = "http://localhost:8080/logout";			
+		}
+	</script>
+
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="/home">School</a>
+			<button class="navbar-brand btn" onclick="home()">School</button>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -39,11 +51,11 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="addstudentdetails">Add Student</a></li>
+					<li class="nav-item"><button class="btn nav-link active"
+						aria-current="page" onclick="addstudent()" >Add Student</button></li>
 				</ul>
 				<div class="d-flex">
-					<a class="btn btn-outline-success" href="#"> LOGOUT </a>
+					<button class="btn btn-outline-success" onclick="logout()"> LOGOUT </button>
 				</div>
 			</div>
 		</div>
@@ -80,8 +92,9 @@
 					<td><%=intCap(student.getFirstName()) + " " + intCap(student.getLastName())%></td>
 					<td><%=intCap(student.getGender())%></td>
 					<td><%=student.getSclass()%></td>
-					<td><a href="#" class="btn btn-outline-primary">View
-							Details</a></td>
+					<td><button onclick="getDetails(<%=student.getSid() %>)" class="btn btn-outline-primary">View
+							Details</button>
+							</td>
 				</tr>
 				<%
 				}
@@ -109,5 +122,10 @@
 			return String.valueOf(str.charAt(0)).toUpperCase() + str.substring(1).toLowerCase();
 		}
 	}%>
+	
+<script type="text/javascript">
+function getDetails(id){
+	window.location.href = "http://localhost:8080/studentdetails/"+id;
 }
+</script>
 </html>

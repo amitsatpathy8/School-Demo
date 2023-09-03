@@ -1,5 +1,6 @@
 package com.school.SchoolDemoProject.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.school.SchoolDemoProject.utill.StudentDetailsUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 
 @Service
 public class StudentService {
@@ -43,11 +45,10 @@ public class StudentService {
 		}
 		Student student = new Student(studentUtil.groomDetails(details));
 		if (dao.saveStudent(student)) {
-			ModelAndView view = new ModelAndView("home");
-			return view;
+			return getHomePage(request, response);
 		}
 		session.setAttribute("invalidDetails", true);
-		session.setAttribute("error", "Duplicate Entry");
+		session.setAttribute("error", "Duplicate Entry (Email)");
 		ModelAndView view = new ModelAndView("addstudent");
 		view.addObject(details);
 		return view;
@@ -59,6 +60,50 @@ public class StudentService {
 		session.setAttribute("students", allStudets);
 		ModelAndView view = new ModelAndView("home");
 		return view;
+	}
+
+	public ModelAndView allDetails(HttpServletRequest request, HttpServletResponse response, int sid) {
+		HttpSession session = request.getSession();
+		session.setAttribute("alldetails", dao.getDetails(sid));
+		ModelAndView view = new ModelAndView("fulldetails");
+		return view;
+	}
+
+	public ModelAndView updateForm(int sid, HttpServletRequest request) {
+		Student student = dao.getDetails(sid);
+		HttpSession session = request.getSession();
+		session.removeAttribute("invalidDetails");
+		ModelAndView view = new ModelAndView("updatestudent");
+		view.addObject(student);
+		return view;
+	}
+
+	public ModelAndView updateDetails(Student student, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		if (!studentUtil.isValidStudentDetails(new StudentDetails(student))) {
+			session.setAttribute("invalidDetails", true);
+			session.setAttribute("error", "Invalid Details");
+			ModelAndView view = new ModelAndView("updatestudent");
+			view.addObject(student);
+			return view;
+		}
+		student = new Student(studentUtil.groomDetails(new StudentDetails(student)));
+		if (dao.updateDetails(student)) {
+			ModelAndView view = new ModelAndView("buffer");
+			return view;
+		}
+		session.setAttribute("invalidDetails", true);
+		session.setAttribute("error", "Duplicate Entry");
+		ModelAndView view = new ModelAndView("updatestudent");
+		view.addObject(student);
+		return view;
+	}
+
+	public ModelAndView deleteData(int sid, HttpServletRequest request, HttpServletResponse response) {
+		if (dao.deleteStudent(sid)) {
+			return getHomePage(request, response);
+		}
+		return updateForm(sid, request);
 	}
 
 }

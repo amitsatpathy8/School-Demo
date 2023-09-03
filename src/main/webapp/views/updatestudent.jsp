@@ -1,3 +1,4 @@
+<%@page import="com.school.SchoolDemoProject.Dto.Student"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="student"
@@ -17,12 +18,36 @@
 	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 	crossorigin="anonymous"></script>
 <title>School</title>
-<link rel="stylesheet" href="./css/home.css" />
+<style type="text/css">
+.container-adj {
+	margin-top: 3%;
+	width: 80%;
+	border-style: solid;
+	border-color: black;
+	padding: 5% 5%;
+}
+
+.container-adj-without-border {
+	margin-top: 3%;
+	width: 80%;
+}
+
+.lable-adj {
+	font-weight: 700;
+}
+</style>
 </head>
 <body>
-<%if(session.getAttribute("validated")==null || (Boolean)session.getAttribute("validated")== false) {%>
-<h1>Session Expired...</h1>
-<%}else{ %>
+	<%
+	if (session.getAttribute("validated") == null || (Boolean) session.getAttribute("validated") == false) {
+	%>
+	<h1>Session expired</h1>
+	<%
+	} else {
+	%>
+	<%
+	Student student = (Student) session.getAttribute("alldetails");
+	%>
 	<script type="text/javascript">
 		function home() {
 			window.location.href = "http://localhost:8080/home";
@@ -33,7 +58,7 @@
 		function logout(){
 			window.location.href = "http://localhost:8080/logout";			
 		}
-
+		
 	</script>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -56,19 +81,25 @@
 			</div>
 		</div>
 	</nav>
+
 	<div class="container container-adj">
-		<student:form action="saveStudent" method="post"
-			modelAttribute="studentDetails">
+		<student:form action="update" method="POST" modelAttribute="student">
 			<div class="mb-3">
 				<%
-				if ((Boolean) session.getAttribute("invalidDetails") == true) {
+				if (session.getAttribute("invalidDetails") != null) {
+					if ((Boolean) session.getAttribute("invalidDetails") == true) {
 				%>
 				<h2 style="color: red;">Something Went wrong</h2>
-				<h4 style="color: gray;"><%=session.getAttribute("error") %></h4>
+				<h4 style="color: gray;"><%=session.getAttribute("error")%></h4>
 				<%
 				} else {
 				%>
-				<h2>Add Student Details</h2>
+				<h2>Update Student Details</h2>
+				<%
+				}
+				} else {
+				%>
+				<h2>Update Student Details</h2>
 				<%
 				}
 				%>
@@ -91,11 +122,11 @@
 				<div class="mb-3 col-6">
 					<label class="form-label lable-adj">Email Address</label>
 					<student:input type="email" path="email" class="form-control"
-						placeholder="Enter Student Email" required="required" />
+						placeholder="Enter Student Email" readonly="true" />
 				</div>
 				<div class="mb-3 col-6">
 					<label class="form-label lable-adj">Contact Number</label>
-					<student:input type="number"  class="form-control" path="phone"
+					<student:input type="number" path="contact" class="form-control"
 						placeholder="Enter Parent Contact Number" required="required" />
 				</div>
 			</div>
@@ -103,8 +134,9 @@
 			<div class="row">
 				<div class="mb-3 col-6">
 					<label class="form-label lable-adj">Class</label>
-					<student:select path="sclass" class="form-control"
-						name="class_standard" required="required">
+					<student:select class="form-control" path="sclass"
+						name="class_standard">
+						<student:option value=""></student:option>
 						<student:option value="none">--select class--</student:option>
 						<student:option value="1">1st</student:option>
 						<student:option value="2">2nd</student:option>
@@ -122,14 +154,11 @@
 					<label class="form-label lable-adj" style="margin-right: 10px">Gender</label>
 					<div class="form-control"
 						style="border-style: none; padding-left: 0px">
-						<student:radiobutton path="gender" name="gender" value="MALE"
-							checked="checked" required="required" />
+						<student:radiobutton path="gender" name="gender" value="MALE" />
 						Male
-						<student:radiobutton path="gender" name="gender" value="FEMALE"
-							required="required" />
+						<student:radiobutton path="gender" name="gender" value="FEMALE" />
 						Female
-						<student:radiobutton path="gender" name="gender" value="OTHER"
-							required="required" />
+						<student:radiobutton path="gender" name="gender" value="OTHER" />
 						Other
 					</div>
 				</div>
@@ -157,18 +186,20 @@
 						required="required" />
 				</div>
 				<div class="col-6">
-					<div class="form-label">DOB</div>
+					<div class="form-label lable-adj">DOB</div>
 					<student:input type="date" path="dob" class="form-control"
-						required="required" />
+						value="${student.getDob()}" required="required" />
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-6">
-					<student:button type="submit" class="btn btn-success">Add Student</student:button>
+				<student:input type="number" path="sid" class="form-control"
+					placeholder="Student ID" readonly="true" hidden="true" />
+				<div class="mb-3">
+					<student:button type="submit" class="btn btn-warning">Revise</student:button>
 				</div>
 			</div>
 		</student:form>
 	</div>
-	<%} %>
+	<%
+	}
+	%>
 </body>
 </html>

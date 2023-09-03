@@ -14,9 +14,9 @@ public class StudentDetailsUtil {
 		details.setFirstName(details.getFirstName().toLowerCase().trim());
 		details.setLastName(details.getLastName().toLowerCase().trim());
 		details.setEmail(details.getEmail().toLowerCase().trim());
-		details.setCity(details.getCity().trim());
-		details.setState(details.getState().trim());
-		details.setCountry(details.getCountry().trim());
+		details.setCity(details.getCity().toLowerCase().trim());
+		details.setState(details.getState().toLowerCase().trim());
+		details.setCountry(details.getCountry().toLowerCase().trim());
 		return details;
 	}
 

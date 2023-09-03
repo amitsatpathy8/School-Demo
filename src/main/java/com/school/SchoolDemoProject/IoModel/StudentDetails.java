@@ -1,5 +1,7 @@
 package com.school.SchoolDemoProject.IoModel;
 
+import com.school.SchoolDemoProject.Dto.Student;
+
 public class StudentDetails {
 	private String firstName;
 	private String lastName;
@@ -12,12 +14,22 @@ public class StudentDetails {
 	private String country;
 	private String dob;
 
-	@Override
-	public String toString() {
-		return "StudentDetails [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phone="
-				+ phone + ", sclass=" + sclass + ", gender=" + gender + ", city=" + city + ", state=" + state
-				+ ", country=" + country + ", dob=" + dob + "]\n";
+	public StudentDetails() {
+		super();
 	}
+	
+	public StudentDetails(Student student) {
+        this.firstName = student.getFirstName();
+        this.lastName = student.getLastName();
+        this.email = student.getEmail();
+        this.phone = student.getContact();
+        this.sclass = student.getSclass();
+        this.gender = student.getGender();
+        this.city = student.getCity();
+        this.state = student.getState();
+        this.country = student.getCountry();
+        this.dob = student.getDob().toString();
+    }
 
 	public String getFirstName() {
 		return firstName;
@@ -99,4 +111,10 @@ public class StudentDetails {
 		this.dob = dob;
 	}
 
+	@Override
+	public String toString() {
+		return "StudentDetails [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phone="
+				+ phone + ", sclass=" + sclass + ", gender=" + gender + ", city=" + city + ", state=" + state
+				+ ", country=" + country + ", dob=" + dob + "]\n";
+	}
 }
