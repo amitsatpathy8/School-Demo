@@ -1,0 +1,15 @@
+.container-adj {
+  margin-top: 3%;
+  width: 80%;
+  border-style: solid;
+  border-color: black;
+  padding: 5% 5%;
+}
+.container-adj-without-border {
+  margin-top: 3%;
+  width: 80%;
+}
+
+.lable-adj {
+  font-weight: 700;
+}
