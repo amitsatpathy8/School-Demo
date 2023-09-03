@@ -2,6 +2,13 @@ package com.school.SchoolDemoProject.IoModel;
 
 import com.school.SchoolDemoProject.Dto.Student;
 
+/**
+ * This class was only created to initially transfer the data
+ * from the form to the server where some of the fields are String here
+ * which help to validate the data easy. Also it contains
+ * Constructor that can convert StudentDetails object to Student
+ * */
+
 public class StudentDetails {
 	private String firstName;
 	private String lastName;
@@ -18,6 +25,9 @@ public class StudentDetails {
 		super();
 	}
 	
+	/**
+	 * Copy constructor
+	 * */
 	public StudentDetails(Student student) {
         this.firstName = student.getFirstName();
         this.lastName = student.getLastName();

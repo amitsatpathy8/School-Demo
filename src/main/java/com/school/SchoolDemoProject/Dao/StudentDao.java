@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 import com.school.SchoolDemoProject.Dto.Student;
 import com.school.SchoolDemoProject.Repo.StudentRepo;
 
+/**
+ * Contains all methods to
+ * persist/retrieve/update/delete the Student data
+ * */
+
 @Repository
 public class StudentDao {
 	@Autowired

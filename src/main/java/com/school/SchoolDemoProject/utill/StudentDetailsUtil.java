@@ -7,13 +7,24 @@ import org.springframework.stereotype.Component;
 
 import com.school.SchoolDemoProject.IoModel.StudentDetails;
 
+/**
+ * Contains most of the utility methods that help 
+ * to validate the student data.
+ * */
+
 @Component
 public class StudentDetailsUtil {
-
+	
+	/**
+	 * helps to store data in a presentable
+	 * and uniform manner.
+	 * */
+	
 	public StudentDetails groomDetails(StudentDetails details) {
 		details.setFirstName(details.getFirstName().toLowerCase().trim());
 		details.setLastName(details.getLastName().toLowerCase().trim());
 		details.setEmail(details.getEmail().toLowerCase().trim());
+		details.setGender(details.getGender().toLowerCase().trim());
 		details.setCity(details.getCity().toLowerCase().trim());
 		details.setState(details.getState().toLowerCase().trim());
 		details.setCountry(details.getCountry().toLowerCase().trim());

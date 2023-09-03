@@ -1,15 +1,20 @@
 package com.school.SchoolDemoProject.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.school.SchoolDemoProject.Dao.StudentDao;
+import com.school.SchoolDemoProject.Dao.TeacherDao;
 import com.school.SchoolDemoProject.Dto.Student;
+import com.school.SchoolDemoProject.Dto.Teacher;
 import com.school.SchoolDemoProject.IoModel.StudentDetails;
+import com.school.SchoolDemoProject.utill.EncryptUtill;
 import com.school.SchoolDemoProject.utill.StudentDetailsUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,13 +22,48 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
 
+/**
+ * It contains all the business login that requires
+ * to process the data as well as 
+ * produce the routes that can forwarded to the controller.
+ * */
+
 @Service
 public class StudentService {
 	@Autowired
 	private StudentDao dao;
 
 	@Autowired
+	private TeacherDao teacherDao;
+
+	@Autowired
 	private StudentDetailsUtil studentUtil;
+
+	@Autowired
+	private EncryptUtill passwordEncoder;
+	
+	/**
+	 * Here we are validating the user of 
+	 * the application using passwordEncoder
+	 * */
+	
+	public ModelAndView login(String email, String pass, HttpServletRequest request, HttpServletResponse response) {
+		Teacher teacher = teacherDao.getTeacherByEmail(email);
+		if (teacher != null) {
+			if (passwordEncoder.passwordEncoder().matches(pass, teacher.getPassword())) {
+				teacherDao.trackLogin(email, LocalDateTime.now());
+				try {
+					HttpSession session = request.getSession();
+					session.setAttribute("validated", true);
+					response.sendRedirect("home");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		ModelAndView view = new ModelAndView("index");
+		return view;
+	}
 
 	public ModelAndView getStudentForm(HttpServletRequest request, HttpServletResponse response) {
 		StudentDetails details = new StudentDetails();

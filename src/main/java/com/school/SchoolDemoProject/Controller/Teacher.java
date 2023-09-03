@@ -18,32 +18,28 @@ import org.springframework.web.servlet.ModelAndView;
 import com.school.SchoolDemoProject.Dto.Student;
 import com.school.SchoolDemoProject.IoModel.StudentDetails;
 import com.school.SchoolDemoProject.Service.StudentService;
+import com.school.SchoolDemoProject.Service.TeacherApplicationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+/**
+ * This contains all the routes for the application.
+ * */
 
 @Controller
 public class Teacher {
 	@Autowired
 	private StudentService studentService;
 
+	@Autowired
+	private TeacherApplicationService teacherApplicationService;
+
 	@RequestMapping("/loginValidation")
 	public ModelAndView validate(@RequestParam String email, @RequestParam String pass, HttpServletRequest request,
 			HttpServletResponse response) {
-		System.out.println(email);
-		System.out.println(pass);
-		if (email.equals("admin@gmail.com") && pass.equals("admin")) {
-			try {
-				HttpSession session = request.getSession();
-				session.setAttribute("validated", true);
-				response.sendRedirect("home");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		ModelAndView view = new ModelAndView("index");
-		return view;
+		return studentService.login(email, pass, request, response);
 	}
 
 	@GetMapping("/home")
@@ -69,8 +65,8 @@ public class Teacher {
 	}
 
 	@GetMapping("/updatestudentform/{id}")
-	public ModelAndView updateStudentForm(@PathVariable("id") int sid,HttpServletRequest request) {
-		return studentService.updateForm(sid,request);
+	public ModelAndView updateStudentForm(@PathVariable("id") int sid, HttpServletRequest request) {
+		return studentService.updateForm(sid, request);
 	}
 
 	@PostMapping("/updatestudentform/update")
@@ -78,19 +74,30 @@ public class Teacher {
 			HttpServletResponse response) {
 		return studentService.updateDetails(student, request, response);
 	}
-	
+
 	@RequestMapping("/delete/{id}")
-	public ModelAndView delete(@PathVariable("id") int sid,HttpServletRequest request,
-			HttpServletResponse response) {
+	public ModelAndView delete(@PathVariable("id") int sid, HttpServletRequest request, HttpServletResponse response) {
 		return studentService.deleteData(sid, request, response);
 	}
-	
+
 	@GetMapping("/logout")
-	public ModelAndView logout(HttpServletRequest request,HttpServletResponse response) {
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		session.removeAttribute("validated");
 		ModelAndView view = new ModelAndView("index");
 		return view;
+	}
+	
+	/**
+	 * This is the rout that helps
+	 * to create a new thread for the CLI application
+	 * to while request hit the URL. while the other user
+	 *  can still use the application.
+	 * */
+
+	@RequestMapping("/maintain")
+	public ModelAndView maintain() {
+		return teacherApplicationService.runApp(teacherApplicationService);
 	}
 
 }

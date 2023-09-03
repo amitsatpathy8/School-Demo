@@ -154,11 +154,11 @@
 					<label class="form-label lable-adj" style="margin-right: 10px">Gender</label>
 					<div class="form-control"
 						style="border-style: none; padding-left: 0px">
-						<student:radiobutton path="gender" name="gender" value="MALE" />
+						<student:radiobutton path="gender" value="male" />
 						Male
-						<student:radiobutton path="gender" name="gender" value="FEMALE" />
+						<student:radiobutton path="gender" value="female" />
 						Female
-						<student:radiobutton path="gender" name="gender" value="OTHER" />
+						<student:radiobutton path="gender" value="other" />
 						Other
 					</div>
 				</div>
