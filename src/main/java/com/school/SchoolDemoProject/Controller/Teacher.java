@@ -10,19 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.school.SchoolDemoProject.IoModel.StudentDetails;
-import com.school.SchoolDemoProject.utill.StudentDetailsUtil;
+import com.school.SchoolDemoProject.Service.StudentService;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class Teacher {
-
 	@Autowired
-	private StudentDetailsUtil studentUtil;
+	private StudentService studentService;
 
 	@RequestMapping("/loginValidation")
 	public ModelAndView validate(@RequestParam String email, @RequestParam String pass, HttpServletRequest request,
@@ -44,32 +41,17 @@ public class Teacher {
 
 	@RequestMapping("/home")
 	public ModelAndView home(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView view = new ModelAndView("home");
-		return view;
+		return studentService.getHomePage(request, response);
 	}
 
 	@RequestMapping("/addstudentdetails")
 	public ModelAndView addStudentForm(HttpServletRequest request, HttpServletResponse response) {
-		StudentDetails details = new StudentDetails();
-		HttpSession session = request.getSession();
-		session.setAttribute("invalidDetails", false);
-		ModelAndView view = new ModelAndView("addstudent");
-		view.addObject(details);
-		return view;
+		return studentService.getStudentForm(request, response);
 	}
 
 	@RequestMapping("/saveStudent")
 	public ModelAndView saveStudent(@ModelAttribute StudentDetails details, HttpServletRequest request,
 			HttpServletResponse response) {
-		if (!studentUtil.isValidStudentDetails(details)) {
-			HttpSession session = request.getSession();
-			session.setAttribute("invalidDetails", true);
-			ModelAndView view = new ModelAndView("addstudent");
-			view.addObject(details);
-			return view;
-		}
-		System.out.println(details);
-		ModelAndView view = new ModelAndView("home");
-		return view;
+		return studentService.saveStudent(details, request, response);
 	}
 }

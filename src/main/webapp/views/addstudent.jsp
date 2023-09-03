@@ -20,6 +20,9 @@
 <link rel="stylesheet" href="./css/home.css" />
 </head>
 <body>
+<%if(session.getAttribute("validated")==null || (Boolean)session.getAttribute("validated")== false) {%>
+<h1>Session Expired...</h1>
+<%}else{ %>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="home">School</a>
@@ -47,7 +50,8 @@
 				<%
 				if ((Boolean) session.getAttribute("invalidDetails") == true) {
 				%>
-				<h2 style="color: red;">Fill Details Carefully</h2>
+				<h2 style="color: red;">Something Went wrong</h2>
+				<h4 style="color: gray;"><%=session.getAttribute("error") %></h4>
 				<%
 				} else {
 				%>
@@ -152,5 +156,6 @@
 			</div>
 		</student:form>
 	</div>
+	<%} %>
 </body>
 </html>

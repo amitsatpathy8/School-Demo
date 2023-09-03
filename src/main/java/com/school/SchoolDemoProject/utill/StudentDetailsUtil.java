@@ -13,6 +13,7 @@ public class StudentDetailsUtil {
 	public StudentDetails groomDetails(StudentDetails details) {
 		details.setFirstName(details.getFirstName().toLowerCase().trim());
 		details.setLastName(details.getLastName().toLowerCase().trim());
+		details.setEmail(details.getEmail().toLowerCase().trim());
 		details.setCity(details.getCity().trim());
 		details.setState(details.getState().trim());
 		details.setCountry(details.getCountry().trim());
@@ -28,7 +29,9 @@ public class StudentDetailsUtil {
 				status = false;
 			if (String.valueOf(details.getPhone()).length() != 10)
 				status = false;
-			// Format that we receive from the form : 2023-08-29
+			/**
+			 * Format that we receive from the form : yyyy-mm-d
+			 */
 			LocalDate dob = LocalDate.parse(details.getDob());
 			LocalDate currentDate = LocalDate.now();
 			Period difference = Period.between(dob, currentDate);
