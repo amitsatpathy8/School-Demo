@@ -14,6 +14,7 @@ import com.school.SchoolDemoProject.Dao.TeacherDao;
 import com.school.SchoolDemoProject.Dto.Student;
 import com.school.SchoolDemoProject.Dto.Teacher;
 import com.school.SchoolDemoProject.IoModel.StudentDetails;
+import com.school.SchoolDemoProject.IoModel.TeacherIoModel;
 import com.school.SchoolDemoProject.utill.EncryptUtill;
 import com.school.SchoolDemoProject.utill.StudentDetailsUtil;
 
@@ -49,10 +50,10 @@ public class StudentService {
 		Teacher teacher = teacherDao.getTeacherByEmail(email);
 		if (teacher != null) {
 			if (passwordEncoder.match(pass, teacher.getPassword())) {
-				teacherDao.trackLogin(email, LocalDateTime.now());
 				try {
 					HttpSession session = request.getSession();
 					session.setAttribute("validated", true);
+					session.setAttribute("email", email);
 					response.sendRedirect("home");
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -143,10 +144,10 @@ public class StudentService {
 		}
 		return updateForm(sid, request);
 	}
-	
+
 	/**
 	 * Method that helps to match the search term and provide search result.
-	 * */
+	 */
 	public ModelAndView searchResult(String searchType, String keyword, HttpServletRequest request,
 			HttpServletResponse response) {
 
@@ -196,6 +197,35 @@ public class StudentService {
 		}
 
 		ModelAndView view = new ModelAndView("home");
+		return view;
+	}
+
+	public ModelAndView getSetting(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		try {
+			String email = (String) session.getAttribute("email");
+			Teacher teacher = teacherDao.getTeacherByEmail(email);
+			TeacherIoModel teacherIoModel = new TeacherIoModel(teacher);
+			ModelAndView view = new ModelAndView("teacherdetails");
+			view.addObject("teacher",teacherIoModel);
+			return view;
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				response.sendRedirect("logout");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return new ModelAndView("index");
+		}
+	}
+	
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		String email = (String)session.getAttribute("email");
+		session.removeAttribute("validated");
+		ModelAndView view = new ModelAndView("index");
+		teacherDao.trackLogin(email, LocalDateTime.now());
 		return view;
 	}
 

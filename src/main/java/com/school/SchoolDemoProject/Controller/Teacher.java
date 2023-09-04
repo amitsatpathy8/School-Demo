@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  * This contains all the routes for the application.
- * */
+ */
 
 @Controller
 public class Teacher {
@@ -82,28 +82,30 @@ public class Teacher {
 
 	@GetMapping("/logout")
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-		session.removeAttribute("validated");
-		ModelAndView view = new ModelAndView("index");
-		return view;
+		return studentService.logout(request, response);
 	}
-	
+
 	@GetMapping("/searchForm")
 	public ModelAndView seachForm() {
 		return new ModelAndView("searchby");
 	}
-	
+
 	@GetMapping("/result/{searchBy}/{keyword}")
-	public ModelAndView search(@PathVariable String searchBy,@PathVariable String keyword,HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView search(@PathVariable String searchBy, @PathVariable String keyword, HttpServletRequest request,
+			HttpServletResponse response) {
 		return studentService.searchResult(searchBy, keyword, request, response);
 	}
-	
+
+	@GetMapping("/setting")
+	public ModelAndView setting(HttpServletRequest request, HttpServletResponse response) {
+		return studentService.getSetting(request, response);
+	}
+
 	/**
-	 * This is the rout that helps
-	 * to create a new thread for the CLI application
-	 * to while request hit the URL. while the other user
-	 *  can still use the application.
-	 * */
+	 * This is the rout that helps to create a new thread for the CLI application to
+	 * while request hit the URL. while the other user can still use the
+	 * application.
+	 */
 
 	@RequestMapping("/maintain")
 	public ModelAndView maintain() {

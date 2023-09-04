@@ -1,3 +1,6 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="com.school.SchoolDemoProject.IoModel.TeacherIoModel"%>
 <%@page import="com.school.SchoolDemoProject.Dto.Student"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
@@ -35,23 +38,6 @@
 	font-weight: 700;
 }
 </style>
-<script type="text/javascript">
-	function home() {
-		window.location.href = "http://localhost:8080/home";
-	}
-	function addstudent() {
-		window.location.href = "http://localhost:8080/addstudentdetails";
-	}
-	function search() {
-		window.location.href = "http://localhost:8080/searchForm";
-	}
-	function logout() {
-		window.location.href = "http://localhost:8080/logout";
-	}
-	function setting() {
-		window.location.href = "http://localhost:8080/setting";
-	}
-</script>
 </head>
 <body>
 	<%
@@ -60,9 +46,24 @@
 	<h1>Session expired</h1>
 	<%
 	} else {
-	Student student = (Student) session.getAttribute("alldetails");
 	%>
-
+	<script type="text/javascript">
+		function home() {
+			window.location.href = "http://localhost:8080/home";
+		}
+		function addstudent() {
+			window.location.href = "http://localhost:8080/addstudentdetails";
+		}
+		function logout() {
+			window.location.href = "http://localhost:8080/logout";
+		}
+		function search() {
+			window.location.href = "http://localhost:8080/searchForm";
+		}
+		function setting() {
+			window.location.href = "http://localhost:8080/setting";
+		}
+	</script>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
@@ -89,64 +90,60 @@
 			</div>
 		</div>
 	</nav>
-
+	<%
+	TeacherIoModel teacher = null;
+	try {
+		teacher = (TeacherIoModel) request.getAttribute("teacher");
+	%>
 	<div class="container container-adj-without-border"
 		style="width: 75%; margin-top: 5%">
 		<div class="card">
 			<div class="card-header bg-dark"
-				style="color: white; font-weight: 700"><%=intCap(student.getFirstName()) + " " + intCap(student.getLastName())%></div>
+				style="color: white; font-weight: 700"><%=intCap(teacher.getFirstName()) + " " + intCap(teacher.getLastName())%></div>
 			<div class="card-body">
 				<div class="row">
 					<div class="col-6">
 						<h5 class="card-title">
-							<span style="font-weight: 700">ID</span> : <span id="studentId"><%=student.getSid()%></span>
-						</h5>
-						<h5 class="card-title">
 							<span style="font-weight: 700">First Name</span> :
-							<%=intCap(student.getFirstName())%>
+							<%=intCap(teacher.getFirstName())%>
 						</h5>
 						<h5 class="card-title">
 							<span style="font-weight: 700">Last Name</span> :
-							<%=intCap(student.getLastName())%>
-						</h5>
-						<h5 class="card-title">
-							<span style="font-weight: 700">Class</span> :
-							<%=student.getSclass()%>
+							<%=intCap(teacher.getLastName())%>
 						</h5>
 						<h5 class="card-title">
 							<span style="font-weight: 700">Email</span> : <span
-								id="studentEmail"><%=student.getEmail()%></span>
+								id="studentEmail"><%=teacher.getEmail()%></span>
 						</h5>
 						<h5 class="card-title">
 							<span style="font-weight: 700">Gender</span> :
-							<%=intCap(student.getGender())%>
+							<%=intCap(teacher.getGender())%>
 						</h5>
 					</div>
 					<div class="col-6">
 						<h5 class="card-title">
 							<span style="font-weight: 700">DOB</span> :
-							<%=student.getDob()%>
+							<%=teacher.getDob()%>
 						</h5>
 						<h5 class="card-title">
-							<span style="font-weight: 700">Parent Contact</span> :
-							<%=student.getContact()%>
+							<span style="font-weight: 700">Contact</span> :
+							<%=teacher.getPhone()%>
 						</h5>
 
 						<h5 class="card-title">
-							<span style="font-weight: 700">City Name</span> :
-							<%=intCap(student.getCity())%>
+							<span style="font-weight: 700">Subject</span> :
+							<%=intCap(teacher.getSubject())%>
 						</h5>
 						<h5 class="card-title">
-							<span style="font-weight: 700">State Name</span> :
-							<%=intCap(student.getState())%>
-						</h5>
-						<h5 class="card-title">
-							<span style="font-weight: 700">Country Name</span> :
-							<%=intCap(student.getCountry())%>
+							<span style="font-weight: 700">Last Login</span> :
+							<%=lastLoginString(teacher.getLastLogin())%>
 						</h5>
 					</div>
 				</div>
-				<div style="margin-top: 20px">
+				<div style="margin-top: 30px">
+				<p style="color: gray; font-style: italic; float: right;">New Features are on the way</p>
+				</div>
+				<!-- <div style="margin-top: 20px">
 					<div class="d-flex" style="float: left;">
 						<button class="btn btn-success" style="margin-right: 10px"
 							onclick="home()">Back</button>
@@ -156,12 +153,15 @@
 							style="margin-right: 10px">Update Details</button>
 						<button onclick="deleteData()" class="btn btn-danger">Delete</button>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
-
 	<%
+	} catch (Exception e) {
+	e.printStackTrace();
+	}
+
 	}
 	%>
 
@@ -171,6 +171,14 @@
 		} else {
 			return String.valueOf(str.charAt(0)).toUpperCase() + str.substring(1).toLowerCase();
 		}
+	}%>
+	<%!private String lastLoginString(LocalDateTime last) {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+
+		String dateStr = last.format(dateFormatter);
+		String timeStr = last.format(timeFormatter);
+		return dateStr + " " + timeStr.toUpperCase();
 	}%>
 </body>
 <script type="text/javascript">
@@ -191,4 +199,5 @@
 		}
 	}
 </script>
+
 </html>

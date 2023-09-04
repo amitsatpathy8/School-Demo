@@ -34,14 +34,17 @@
 		function home() {
 			window.location.href = "http://localhost:8080/home";
 		}
-		function addstudent() {
-			window.location.href = "http://localhost:8080/addstudentdetails";
+		function addstudent(){
+			window.location.href = "http://localhost:8080/addstudentdetails";			
 		}
-		function logout() {
-			window.location.href = "http://localhost:8080/logout";
+		function logout(){
+			window.location.href = "http://localhost:8080/logout";			
 		}
-		function search() {
-			window.location.href = "http://localhost:8080/searchForm";
+		function search(){
+			window.location.href = "http://localhost:8080/searchForm";	
+		}
+		function setting(){
+			window.location.href = "http://localhost:8080/setting";				
 		}
 	</script>
 
@@ -56,12 +59,14 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><button class="btn nav-link"
+					<li class="nav-item"><button class="btn nav-link active"
 							aria-current="page" onclick="addstudent()">Add Student</button></li>
 					<li class="nav-item"><button class="btn nav-link"
-							aria-current="page" onclick="search()">Search</button></li>
+							aria-current="page" onclick="search()">Search</button></li>		
 				</ul>
 				<div class="d-flex">
+					<button class="btn btn-outline-success" style="margin-right: 15px" onclick="setting()">
+						Settings</button>
 					<button class="btn btn-outline-success" onclick="logout()">
 						LOGOUT</button>
 				</div>
