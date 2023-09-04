@@ -23,10 +23,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
 
 /**
- * It contains all the business login that requires
- * to process the data as well as 
- * produce the routes that can forwarded to the controller.
- * */
+ * It contains all the business login that requires to process the data as well
+ * as produce the routes that can forwarded to the controller.
+ */
 
 @Service
 public class StudentService {
@@ -41,16 +40,15 @@ public class StudentService {
 
 	@Autowired
 	private EncryptUtill passwordEncoder;
-	
+
 	/**
-	 * Here we are validating the user of 
-	 * the application using passwordEncoder
-	 * */
-	
+	 * Here we are validating the user of the application using passwordEncoder
+	 */
+
 	public ModelAndView login(String email, String pass, HttpServletRequest request, HttpServletResponse response) {
 		Teacher teacher = teacherDao.getTeacherByEmail(email);
 		if (teacher != null) {
-			if (passwordEncoder.passwordEncoder().matches(pass, teacher.getPassword())) {
+			if (passwordEncoder.match(pass, teacher.getPassword())) {
 				teacherDao.trackLogin(email, LocalDateTime.now());
 				try {
 					HttpSession session = request.getSession();
@@ -144,6 +142,61 @@ public class StudentService {
 			return getHomePage(request, response);
 		}
 		return updateForm(sid, request);
+	}
+	
+	/**
+	 * Method that helps to match the search term and provide search result.
+	 * */
+	public ModelAndView searchResult(String searchType, String keyword, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		searchType = searchType.toLowerCase().trim();
+		keyword = keyword.toLowerCase().trim();
+
+		if (searchType.equals("sclass")) {
+			List<Student> allStudets = dao.searchByClass(keyword);
+			HttpSession session = request.getSession();
+			session.setAttribute("students", allStudets);
+
+		} else if (searchType.equals("name")) {
+			List<Student> allStudets = dao.searchByName(keyword);
+			HttpSession session = request.getSession();
+			session.setAttribute("students", allStudets);
+
+		} else if (searchType.equals("email")) {
+			List<Student> allStudets = dao.searchByEmail(keyword);
+			HttpSession session = request.getSession();
+			session.setAttribute("students", allStudets);
+
+		} else if (searchType.equals("gender")) {
+			List<Student> allStudets = dao.searchByGender(keyword);
+			HttpSession session = request.getSession();
+			session.setAttribute("students", allStudets);
+
+		} else if (searchType.equals("contact")) {
+			List<Student> allStudets = dao.searchByContact(Long.parseLong(keyword));
+			HttpSession session = request.getSession();
+			session.setAttribute("students", allStudets);
+
+		} else if (searchType.equals("city")) {
+			List<Student> allStudets = dao.searchByCity(keyword);
+			HttpSession session = request.getSession();
+			session.setAttribute("students", allStudets);
+
+		} else if (searchType.equals("state")) {
+			List<Student> allStudets = dao.searchByState(keyword);
+			HttpSession session = request.getSession();
+			session.setAttribute("students", allStudets);
+
+		} else if (searchType.equals("country")) {
+			List<Student> allStudets = dao.searchByCountry(keyword);
+			HttpSession session = request.getSession();
+			session.setAttribute("students", allStudets);
+
+		}
+
+		ModelAndView view = new ModelAndView("home");
+		return view;
 	}
 
 }

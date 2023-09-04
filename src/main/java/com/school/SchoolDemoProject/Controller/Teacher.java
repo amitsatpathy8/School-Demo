@@ -88,6 +88,16 @@ public class Teacher {
 		return view;
 	}
 	
+	@GetMapping("/searchForm")
+	public ModelAndView seachForm() {
+		return new ModelAndView("searchby");
+	}
+	
+	@GetMapping("/result/{searchBy}/{keyword}")
+	public ModelAndView search(@PathVariable String searchBy,@PathVariable String keyword,HttpServletRequest request, HttpServletResponse response) {
+		return studentService.searchResult(searchBy, keyword, request, response);
+	}
+	
 	/**
 	 * This is the rout that helps
 	 * to create a new thread for the CLI application

@@ -1,21 +1,33 @@
 package com.school.SchoolDemoProject.utill;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
-/**
- * Bean Configuration class for password encoder 
- * */
-
-@Configuration
+@Component
 public class EncryptUtill {
+	
+	@Autowired
+	private PasswordEncoderUtill encoderUtill;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	/**
+	 * Created some utility method that help to
+	 * encrypt and match the password.
+	 */
+
+	public String encryptPassword(String userpassword) {
+		return encoderUtill.passwordEncoder().encode(userpassword);
+	}
+
+	public boolean match(String userpassword, String encryptedPassword) {
+		PasswordEncoder encoder = encoderUtill.passwordEncoder();
+		if (encoder.matches(userpassword, encryptedPassword)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
-

@@ -10,9 +10,8 @@ import com.school.SchoolDemoProject.Dto.Student;
 import com.school.SchoolDemoProject.Repo.StudentRepo;
 
 /**
- * Contains all methods to
- * persist/retrieve/update/delete the Student data
- * */
+ * Contains all methods to persist/retrieve/update/delete the Student data
+ */
 
 @Repository
 public class StudentDao {
@@ -53,6 +52,38 @@ public class StudentDao {
 			return true;
 		}
 		return false;
+	}
+
+	public List<Student> searchByName(String name) {
+		return repo.searchByName(name);
+	}
+
+	public List<Student> searchByClass(String sclass) {
+		return repo.searchByClass(sclass);
+	}
+
+	public List<Student> searchByEmail(String email) {
+		return repo.searchByEmail(email);
+	}
+
+	public List<Student> searchByContact(long contact) {
+		return repo.searchByContact(contact);
+	}
+
+	public List<Student> searchByGender(String gender) {
+		return repo.searchByGender(gender);
+	}
+
+	public List<Student> searchByCity(String city) {
+		return repo.searchByCity(city);
+	}
+
+	public List<Student> searchByState(String state) {
+		return repo.searchByState(state);
+	}
+
+	public List<Student> searchByCountry(String country) {
+		return repo.searchByCountry(country);
 	}
 
 }

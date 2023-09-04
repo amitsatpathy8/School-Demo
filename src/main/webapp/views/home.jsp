@@ -38,6 +38,9 @@
 		function logout(){
 			window.location.href = "http://localhost:8080/logout";			
 		}
+		function search(){
+			window.location.href = "http://localhost:8080/searchForm";	
+		}
 	</script>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -51,8 +54,10 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><button class="btn nav-link active"
+					<li class="nav-item"><button class="btn nav-link"
 						aria-current="page" onclick="addstudent()" >Add Student</button></li>
+					<li class="nav-item"><button class="btn nav-link"
+						aria-current="page" onclick="search()">Search</button></li>
 				</ul>
 				<div class="d-flex">
 					<button class="btn btn-outline-success" onclick="logout()"> LOGOUT </button>
@@ -72,7 +77,7 @@
 		} else {
 		%>
 		<table class="table table-striped table-hover">
-			<h2>All Students List</h2>
+			<h2>Students List</h2>
 			<hr />
 			<thead>
 				<tr class="table-dark">

@@ -21,7 +21,7 @@ public class TeacherDao {
 	private TeacherRepo repo;
 	
 	@Autowired
-	private EncryptUtill passwordEncoder;
+	private EncryptUtill encryptUtill;
 	
 	/**
 	 * The password is encoded in this area while sign up.
@@ -30,7 +30,7 @@ public class TeacherDao {
 	public boolean saveTeacher(Teacher teacher) {
 		Teacher teacher2 = repo.findByEmail(teacher.getEmail());
 		if (teacher2 == null) {
-			String encodedPassword = passwordEncoder.passwordEncoder().encode(teacher.getPassword());
+			String encodedPassword = encryptUtill.encryptPassword(teacher.getPassword());
 			teacher.setPassword(encodedPassword);
 			repo.save(teacher);
 			return true;
